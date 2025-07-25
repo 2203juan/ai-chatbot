@@ -35,3 +35,19 @@ Thumbs.db
 # MacOS files
 .AppleDouble
 .LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+chat/
+
+# Other Python files
+*.egg-info/
+*.eggs/
+dist/
+build/
+.coverage
+.tox/
+*.mypy_cache/
+.pytest_cache/

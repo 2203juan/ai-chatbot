@@ -1,8 +1,3 @@
----
-// Script para asegurar que el JS corre en el cliente
-const props = Astro.props;
----
-
 <script client:load>
   function sendChatMessage() {
     const inputElement = document.getElementById('chat-input');
@@ -10,12 +5,11 @@ const props = Astro.props;
     const chatContent = document.getElementById('chat-content');
 
     if (message.trim()) {
-      // Muestra el mensaje en el cliente
       const userMessage = document.createElement('div');
-      userMessage.textContent = `Tú: ${message}`;
+      userMessage.classList.add('user-message');
+      userMessage.textContent = message;
       chatContent.appendChild(userMessage);
 
-      // Envía el mensaje al servidor backend
       fetch('http://localhost:5000/api/send-message', {
         method: 'POST',
         headers: {
@@ -26,7 +20,8 @@ const props = Astro.props;
       .then(response => response.json())
       .then(data => {
         const botReply = document.createElement('div');
-        botReply.textContent = `Bot: ${data.reply}`;
+        botReply.classList.add('bot-message');
+        botReply.textContent = data.reply;
         chatContent.appendChild(botReply);
         chatContent.scrollTop = chatContent.scrollHeight;
       })
@@ -34,34 +29,65 @@ const props = Astro.props;
         console.error('Error:', error);
       });
 
-      inputElement.value = ''; // Limpia el campo de entrada
+      inputElement.value = '';
     }
   }
+
+  function toggleChatbot() {
+
+    // Toggle visibility of the chatbot container
+    const chatbotContainer = document.querySelector('.chatbot-container');
+    if (chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '')
+      chatbotContainer.style.display = 'block';
+    else
+      chatbotContainer.style.display = 'none';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const inputElement = document.getElementById('chat-input');
+    inputElement.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        sendChatMessage();
+      }
+    });
+  });
 </script>
 
 <style>
   .chatbot-container {
-    background-color: #e8f5e9; /* Verde claro */
-    border-radius: 8px;
-    width: 100%;
-    max-width: 400px;
-    margin: 20px auto; /* Centra el contenedor */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
     overflow: hidden;
+    font-family: Arial, sans-serif;
   }
 
   .chat-header {
     background-color: #66bb6a; /* Verde orgánico */
     color: white;
     padding: 10px;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+  }
+
+  .chat-header img {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
   }
 
   .chat-content {
     padding: 10px;
     height: 300px;
     overflow-y: auto;
-    background-color: #ffffff;
+    background-color: #f8f8f8;
   }
 
   .chat-input {
@@ -83,17 +109,59 @@ const props = Astro.props;
     padding: 10px;
     cursor: pointer;
   }
+
+  .user-message {
+    background-color: #e0e0e0;
+    border-radius: 15px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    text-align: right;
+    max-width: 80%;
+    margin-left: auto;
+  }
+
+  .bot-message {
+    background-color: #a5d6a7;
+    border-radius: 15px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    text-align: left;
+    max-width: 80%;
+    margin-right: auto;
+  }
+
+    .floating-button {
+    background-color: #66bb6a;
+    border: none;
+    color: white;
+    padding: 15px;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    display: flex; /* Siempre visible al inicio */
+  }
 </style>
 
 <div class="chatbot-container">
   <div class="chat-header">
-    GreenStore Food Chatbot
+    <img src="img/chat_icon.png" alt="Bot Avatar" />
+    Chatbot Orgánico
+    <span><button onclick="toggleChatbot()">X</button></span>
   </div>
   <div class="chat-content" id="chat-content">
     <!-- Aquí se mostrarán los mensajes -->
   </div>
   <div class="chat-input">
     <input type="text" placeholder="Escribe un mensaje..." id="chat-input" />
-    <button onclick="sendChatMessage()">Enviar</button>
+    <button onClick="sendChatMessage()">Enviar</button>
   </div>
 </div>
+<button class="floating-button" onClick="toggleChatbot()">💬</button>
