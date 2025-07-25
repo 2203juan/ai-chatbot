@@ -20,7 +20,7 @@
       .then(response => response.json())
       .then(data => {
         const botReply = document.createElement('div');
-        botReply.classList.add('bot-message');
+        botReply.classList.add('test');
         botReply.textContent = data.reply;
         chatContent.appendChild(botReply);
         chatContent.scrollTop = chatContent.scrollHeight;
@@ -110,7 +110,7 @@
     cursor: pointer;
   }
 
-  .user-message {
+  /* .user-message {
     background-color: #e0e0e0;
     border-radius: 15px;
     padding: 8px 12px;
@@ -128,7 +128,7 @@
     text-align: left;
     max-width: 80%;
     margin-right: auto;
-  }
+  } */
 
     .floating-button {
     background-color: #66bb6a;
@@ -148,6 +148,30 @@
     z-index: 1000;
     display: flex; /* Siempre visible al inicio */
   }
+  .user-message {
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    max-width: 80%;
+    text-align: right;
+    margin-left: auto;
+  }
+
+  .bot-message {
+    background-color: #a5d6a7;
+    border-radius: 5px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    max-width: 80%;
+    text-align: left;
+    margin-right: auto;
+  }
+  
+  .test {
+    background-color: red !important;
+  }
+
 </style>
 
 <div class="chatbot-container">
