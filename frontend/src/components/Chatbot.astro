@@ -1,6 +1,44 @@
 ---
-// Código Astro aquí (si es necesario)
+// Script para asegurar que el JS corre en el cliente
+const props = Astro.props;
 ---
+
+<script client:load>
+  function sendChatMessage() {
+    const inputElement = document.getElementById('chat-input');
+    const message = inputElement.value;
+    const chatContent = document.getElementById('chat-content');
+
+    if (message.trim()) {
+      // Muestra el mensaje en el cliente
+      const userMessage = document.createElement('div');
+      userMessage.textContent = `Tú: ${message}`;
+      chatContent.appendChild(userMessage);
+
+      // Envía el mensaje al servidor backend
+      fetch('http://localhost:5000/api/send-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: message })
+      })
+      .then(response => response.json())
+      .then(data => {
+        const botReply = document.createElement('div');
+        botReply.textContent = `Bot: ${data.reply}`;
+        chatContent.appendChild(botReply);
+        chatContent.scrollTop = chatContent.scrollHeight;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+
+      inputElement.value = ''; // Limpia el campo de entrada
+    }
+  }
+</script>
+
 <style>
   .chatbot-container {
     background-color: #e8f5e9; /* Verde claro */
@@ -49,13 +87,13 @@
 
 <div class="chatbot-container">
   <div class="chat-header">
-    Chatbot Orgánico
+    GreenStore Food Chatbot
   </div>
   <div class="chat-content" id="chat-content">
-    <!-- Aqui se mostraran los mensajes -->
+    <!-- Aquí se mostrarán los mensajes -->
   </div>
   <div class="chat-input">
-    <input type="text" placeholder="Escribe un mensaje..." id="chat-input"/>
-    <button onClick={sendChatMessage}>Enviar</button>
+    <input type="text" placeholder="Escribe un mensaje..." id="chat-input" />
+    <button onclick="sendChatMessage()">Enviar</button>
   </div>
 </div>
