@@ -1,0 +1,61 @@
+---
+// Código Astro aquí (si es necesario)
+---
+<style>
+  .chatbot-container {
+    background-color: #e8f5e9; /* Verde claro */
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto; /* Centra el contenedor */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .chat-header {
+    background-color: #66bb6a; /* Verde orgánico */
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .chat-content {
+    padding: 10px;
+    height: 300px;
+    overflow-y: auto;
+    background-color: #ffffff;
+  }
+
+  .chat-input {
+    display: flex;
+    border-top: 1px solid #e0e0e0;
+  }
+
+  .chat-input input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    outline: none;
+  }
+
+  .chat-input button {
+    background-color: #66bb6a;
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+  }
+</style>
+
+<div class="chatbot-container">
+  <div class="chat-header">
+    Chatbot Orgánico
+  </div>
+  <div class="chat-content" id="chat-content">
+    <!-- Aqui se mostraran los mensajes -->
+  </div>
+  <div class="chat-input">
+    <input type="text" placeholder="Escribe un mensaje..." id="chat-input"/>
+    <button onClick={sendChatMessage}>Enviar</button>
+  </div>
+</div>
